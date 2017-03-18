@@ -48,9 +48,7 @@ public class DjBoothVerticle extends AbstractVerticle {
     BridgeOptions bridgeOptions = new BridgeOptions()
       .addInboundPermitted(permittedOptions)
       .addOutboundPermitted(permittedOptions);
-    sockJSHandler.bridge(bridgeOptions, event -> {
-      // TODO: deal with join+leave
-    });
+    sockJSHandler.bridge(bridgeOptions);
 
     router.route("/eventbus/*").handler(sockJSHandler);
 
