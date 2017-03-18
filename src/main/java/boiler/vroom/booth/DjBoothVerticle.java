@@ -45,7 +45,7 @@ public class DjBoothVerticle extends AbstractVerticle {
     router.get("/").handler(context -> context.reroute("/assets/dj-booth.html"));
 
     SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
-    PermittedOptions permittedOptions = new PermittedOptions().setAddressRegex("traktor\\..+");
+    PermittedOptions permittedOptions = new PermittedOptions().setAddressRegex("boilervroom\\..+");
     BridgeOptions bridgeOptions = new BridgeOptions()
       .addInboundPermitted(permittedOptions)
       .addOutboundPermitted(permittedOptions);

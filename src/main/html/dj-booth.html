@@ -20,6 +20,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dj Booth</title>
+  <style>
+    h1 {
+      padding-bottom: 2em;
+    }
+  </style>
 </head>
 
 <body>
@@ -27,12 +32,21 @@
 <div class="container">
 
   <div class="row">
-    <h1>Boiler Vroom // Dj Booth</h1>
+    <div class="col-md-12">
+      <h1>Boiler Vroom // Dj Booth</h1>
+    </div>
   </div>
 
-  <div class="row">
-    <div id="midi-alert" class="alert"></div>
-    <div id="server-alert" class="alert"></div>
+  <div class="row col-md-12">
+    <span class="col-md-4">
+      <a href="#" id="midi-alert" class="btn btn-lg btn-danger btn-block">MIDI</a>
+    </span>
+    <span class="col-md-4">
+      <a href="#" id="server-alert" class="btn btn-lg btn-danger btn-block">Event bus</a>
+    </span>
+    <span class="col-md-4">
+      <a href="#" id="source-alert" class="btn btn-lg btn-danger btn-block">Audio source</a>
+    </span>
   </div>
 
 </div>

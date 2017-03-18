@@ -23,6 +23,8 @@ import io.vertx.core.Launcher;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
+import static io.vertx.core.Future.future;
+
 /**
  * @author <a href="https://julien.ponge.org/">Julien Ponge</a>
  */
@@ -33,10 +35,13 @@ public class MainVerticle extends AbstractVerticle {
   @Override
   public void start(Future<Void> startFuture) throws Exception {
 
-    Future<String> djBoothFuture = Future.future();
+    Future<String> djBoothFuture = future();
     vertx.deployVerticle("boiler.vroom.booth.DjBoothVerticle", djBoothFuture);
 
-    CompositeFuture.all(djBoothFuture, Future.succeededFuture("dummy")).setHandler(ar -> {
+    Future<String> audioStreamFuture = future();
+    vertx.deployVerticle("boiler.vroom.audiostream.AudioStreamVerticle", audioStreamFuture);
+
+    CompositeFuture.all(djBoothFuture, audioStreamFuture).setHandler(ar -> {
       if (ar.succeeded()) {
         logger.info("Boiler Vroom started");
         startFuture.complete();

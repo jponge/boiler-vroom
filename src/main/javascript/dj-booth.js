@@ -20,10 +20,10 @@ import EventBus from './vertx-eventbus'
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  const midiAlertDiv = document.getElementById("midi-alert");
+  const midiAlertDisplay = document.getElementById("midi-alert");
   midiSequencer.whenMidiReady(() => {
-    midiAlertDiv.classList.add("alert-success")
-    midiAlertDiv.innerHTML = "Connected to Traktor via MIDI"
+    midiAlertDisplay.classList.add("btn-success")
+    midiAlertDisplay.classList.remove("btn-danger")
 
     const traktorIn = midiSequencer.inputPort(port => port.name.includes("Traktor Virtual"))
     const traktorOut = midiSequencer.outputPort(port => port.name.includes("Traktor Virtual"))
@@ -45,22 +45,32 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
   }, err => {
-    midiAlertDiv.classList.add("alert-danger")
-    midiAlertDiv.innerHTML("Not connected to Traktor via MIDI")
+    midiAlertDisplay.classList.add("btn-danger")
   })
 
   const eventBus = new EventBus("/eventbus")
-  const serverAlertDiv = document.getElementById("server-alert")
+  const serverAlertDisplay = document.getElementById("server-alert")
+
   eventBus.onopen = () => {
-    serverAlertDiv.classList.remove("alert-danger")
-    serverAlertDiv.classList.add("alert-success")
-    serverAlertDiv.innerHTML = "Connected to the server"
+    serverAlertDisplay.classList.remove("btn-danger")
+    serverAlertDisplay.classList.add("btn-success")
+
+    const sourceAlertDisplay = document.getElementById("source-alert")
+    eventBus.registerHandler("boilervroom.audiosource", (err, message) => {
+      if (!err && message.body.connected) {
+        sourceAlertDisplay.classList.remove("btn-danger")
+        sourceAlertDisplay.classList.add("btn-success")
+      } else {
+        sourceAlertDisplay.classList.add("btn-danger")
+        sourceAlertDisplay.classList.remove("btn-success")
+      }
+    })
   }
   eventBus.onclose = () => {
-    serverAlertDiv.classList.add("alert-danger")
-    serverAlertDiv.classList.remove("alert-success")
-    serverAlertDiv.innerHTML = "Disconnected from the server"
+    serverAlertDisplay.classList.add("btn-danger")
+    serverAlertDisplay.classList.remove("btn-success")
   }
+
 
 })
 
