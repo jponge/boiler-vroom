@@ -17,25 +17,48 @@
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css'
 import * as midiSequencer from 'webmidi-sequencer'
 import * as sockjs from 'sockjs-client'
+import EventBus from './vertx-eventbus'
 
-midiSequencer.whenMidiReady(() => {
+document.addEventListener('DOMContentLoaded', () => {
 
-  console.log("MIDI ok")
+  const midiAlertDiv = document.getElementById("midi-alert");
+  midiSequencer.whenMidiReady(() => {
+    midiAlertDiv.classList.add("alert-success")
+    midiAlertDiv.innerHTML = "Connected to Traktor via MIDI"
 
-  let traktorIn = midiSequencer.inputPort(port => port.name.includes("Traktor Virtual"))
-  let traktorOut = midiSequencer.outputPort(port => port.name.includes("Traktor Virtual"))
+    const traktorIn = midiSequencer.inputPort(port => port.name.includes("Traktor Virtual"))
+    const traktorOut = midiSequencer.outputPort(port => port.name.includes("Traktor Virtual"))
 
-  let sequencer = new midiSequencer.Sequencer(traktorIn, traktorOut, 2, 4, [
-    [["C1"], 1],
-    [["E1"], 1],
-    [["C1", "D1", "F1"], 1],
-    [["E1", "F1"], 1],
-    [["C1"], 1],
-    [["E1"], 1],
-    [["C1", "D1"], 1],
-    [["E1"], 1],
-  ])
+    const sequencer = new midiSequencer.Sequencer(traktorIn, traktorOut, 2, 4, [
+      [["C1"], 1],
+      [["E1"], 1],
+      [["C1", "D1", "F1"], 1],
+      [["E1", "F1"], 1],
+      [["C1"], 1],
+      [["E1"], 1],
+      [["C1", "D1"], 1],
+      [["E1"], 1],
+    ])
 
-}, err => {
-  console.log("No MIDI available")
+  }, err => {
+    midiAlertDiv.classList.add("alert-danger")
+    midiAlertDiv.innerHTML("Not connected to Traktor via MIDI")
+  })
+
+  const eventBus = new EventBus("/eventbus")
+  const serverAlertDiv = document.getElementById("server-alert")
+  eventBus.onopen = () => {
+    serverAlertDiv.classList.remove("alert-danger")
+    serverAlertDiv.classList.add("alert-success")
+    serverAlertDiv.innerHTML = "Connected to the server"
+  }
+  const disconnectHandler = () => {
+    serverAlertDiv.classList.add("alert-danger")
+    serverAlertDiv.classList.remove("alert-success")
+    serverAlertDiv.innerHTML = "Disconnected from the server"
+  }
+  eventBus.onerror = disconnectHandler
+  eventBus.onclose = disconnectHandler
+
 })
+

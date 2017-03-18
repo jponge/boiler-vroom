@@ -22,6 +22,9 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.handler.sockjs.BridgeOptions;
+import io.vertx.ext.web.handler.sockjs.PermittedOptions;
+import io.vertx.ext.web.handler.sockjs.SockJSHandler;
 
 /**
  * @author <a href="https://julien.ponge.org/">Julien Ponge</a>
@@ -34,8 +37,22 @@ public class DjBoothVerticle extends AbstractVerticle {
   public void start(Future<Void> startFuture) throws Exception {
 
     Router router = Router.router(vertx);
-    router.get("/assets/*").handler(StaticHandler.create("web-assets"));
+
+    StaticHandler staticHandler = StaticHandler.create("web-assets").setCachingEnabled(false);
+
+    router.get("/assets/*").handler(staticHandler);
     router.get("/").handler(context -> context.reroute("/assets/dj-booth.html"));
+
+    SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
+    PermittedOptions permittedOptions = new PermittedOptions().setAddress("traktor\\..+");
+    BridgeOptions bridgeOptions = new BridgeOptions()
+      .addInboundPermitted(permittedOptions)
+      .addOutboundPermitted(permittedOptions);
+    sockJSHandler.bridge(bridgeOptions, event -> {
+      // TODO: deal with join+leave
+    });
+
+    router.route("/eventbus/*").handler(sockJSHandler);
 
     vertx.createHttpServer()
       .requestHandler(router::accept)

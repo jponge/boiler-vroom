@@ -62,13 +62,13 @@ task webpack(type: NodeTask, dependsOn: 'yarn_install') {
   script = file('node_modules/.bin/webpack')
 }
 
-processResources.dependsOn 'webAssets'
-
 task webAssets(type: Copy, dependsOn: 'webpack') {
   from 'build/webpack'
   from 'src/main/html'
   into 'web-assets'
 }
+
+assemble.dependsOn 'webAssets'
 
 clean.delete << file('web-assets')
 
