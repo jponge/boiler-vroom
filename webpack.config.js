@@ -20,7 +20,7 @@ module.exports = {
   },
   output: {
     filename: '[name].js',
-    path: './build/webpack'
+    path: './src/main/resources/webroot'
   },
   module: {
     rules: [

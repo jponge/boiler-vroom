@@ -3,4 +3,4 @@
 .vertx/
 build/
 node_modules/
-web-assets/
+src/main/resources/webroot

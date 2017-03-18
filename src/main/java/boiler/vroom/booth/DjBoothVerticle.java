@@ -38,7 +38,7 @@ public class DjBoothVerticle extends AbstractVerticle {
 
     Router router = Router.router(vertx);
 
-    StaticHandler staticHandler = StaticHandler.create("web-assets").setCachingEnabled(false);
+    StaticHandler staticHandler = StaticHandler.create().setCachingEnabled(false);
 
     router.get("/assets/*").handler(staticHandler);
     router.get("/").handler(context -> context.reroute("/assets/dj-booth.html"));

@@ -63,14 +63,13 @@ task webpack(type: NodeTask, dependsOn: 'yarn_install') {
 }
 
 task webAssets(type: Copy, dependsOn: 'webpack') {
-  from 'build/webpack'
   from 'src/main/html'
-  into 'web-assets'
+  into 'src/main/resources/webroot'
 }
 
 assemble.dependsOn 'webAssets'
 
-clean.delete << file('web-assets')
+clean.delete << file('src/main/resources/webroot')
 
 task wrapper(type: Wrapper) {
   gradleVersion = '3.4.1'
