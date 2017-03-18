@@ -3063,7 +3063,7 @@ watchpack@^1.2.0:
 
 "webmidi-sequencer@https://github.com/jponge/webmidi-sequencer.git":
   version "0.0.0"
-  resolved "https://github.com/jponge/webmidi-sequencer.git#2bd7c058709e5641ea9295bf0f6356343cc62c42"
+  resolved "https://github.com/jponge/webmidi-sequencer.git#d117bab43d8ac6318b241239d8d8753075b8322b"
   dependencies:
     webmidi "^2.0.0-rc.4"
 
