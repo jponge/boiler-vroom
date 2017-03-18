@@ -35,7 +35,7 @@ mainClassName = 'io.vertx.core.Launcher'
 def vertxVersion = '3.4.1'
 def mainVerticleName = 'boiler.vroom.MainVerticle'
 def watchForChange = 'src/**/*'
-def doOnChange = './gradlew classes'
+def doOnChange = './gradlew classes webAssets'
 
 dependencies {
   compile "io.vertx:vertx-core:$vertxVersion"
@@ -62,7 +62,7 @@ task webpack(type: NodeTask, dependsOn: 'yarn_install') {
   script = file('node_modules/.bin/webpack')
 }
 
-processResources.dependsOn 'webpack'
+processResources.dependsOn 'webAssets'
 
 task webAssets(type: Copy, dependsOn: 'webpack') {
   from 'build/webpack'
