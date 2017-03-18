@@ -34,7 +34,7 @@ mainClassName = 'io.vertx.core.Launcher'
 
 def vertxVersion = '3.4.1'
 def mainVerticleName = 'boiler.vroom.MainVerticle'
-def watchForChange = 'src/**/*'
+def watchForChange = 'src/main/java/**/*'
 def doOnChange = './gradlew classes webAssets'
 
 dependencies {

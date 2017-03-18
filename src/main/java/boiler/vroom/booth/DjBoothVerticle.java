@@ -18,6 +18,7 @@ package boiler.vroom.booth;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
@@ -44,7 +45,7 @@ public class DjBoothVerticle extends AbstractVerticle {
     router.get("/").handler(context -> context.reroute("/assets/dj-booth.html"));
 
     SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
-    PermittedOptions permittedOptions = new PermittedOptions().setAddress("traktor\\..+");
+    PermittedOptions permittedOptions = new PermittedOptions().setAddressRegex("traktor\\..+");
     BridgeOptions bridgeOptions = new BridgeOptions()
       .addInboundPermitted(permittedOptions)
       .addOutboundPermitted(permittedOptions);

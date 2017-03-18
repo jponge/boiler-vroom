@@ -29,7 +29,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const traktorIn = midiSequencer.inputPort(port => port.name.includes("Traktor Virtual"))
     const traktorOut = midiSequencer.outputPort(port => port.name.includes("Traktor Virtual"))
 
-    const sequencer = new midiSequencer.Sequencer(traktorIn, traktorOut, 2, 4, [
+    const stepsPerBeat = 2
+    const stepsPerPattern = 4
+    const sequencer = new midiSequencer.Sequencer(traktorIn, traktorOut, stepsPerBeat, stepsPerPattern, [
       [["C1"], 1],
       [["E1"], 1],
       [["C1", "D1", "F1"], 1],
@@ -39,6 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
       [["C1", "D1"], 1],
       [["E1"], 1],
     ])
+
+    sequencer.addListener(event => {
+    })
 
   }, err => {
     midiAlertDiv.classList.add("alert-danger")
@@ -52,13 +57,11 @@ document.addEventListener('DOMContentLoaded', () => {
     serverAlertDiv.classList.add("alert-success")
     serverAlertDiv.innerHTML = "Connected to the server"
   }
-  const disconnectHandler = () => {
+  eventBus.onclose = () => {
     serverAlertDiv.classList.add("alert-danger")
     serverAlertDiv.classList.remove("alert-success")
     serverAlertDiv.innerHTML = "Disconnected from the server"
   }
-  eventBus.onerror = disconnectHandler
-  eventBus.onclose = disconnectHandler
 
 })
 
