@@ -16,6 +16,7 @@
 
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css'
 import * as midiSequencer from 'webmidi-sequencer'
+import * as sockjs from 'sockjs-client'
 
 midiSequencer.whenMidiReady(() => {
 
