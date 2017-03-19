@@ -16,7 +16,10 @@
 
 package boiler.vroom;
 
-import io.vertx.core.*;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.CompositeFuture;
+import io.vertx.core.DeploymentOptions;
+import io.vertx.core.Future;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
@@ -50,9 +53,5 @@ public class MainVerticle extends AbstractVerticle {
         logger.error("Boiler Vroom failed to start", ar.cause());
       }
     });
-  }
-
-  public static void main(String[] args) {
-    Launcher.main(new String[]{"run ", "boiler.vroom.MainVerticle"});
   }
 }
