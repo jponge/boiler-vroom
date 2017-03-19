@@ -16,10 +16,7 @@
 
 package boiler.vroom;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.CompositeFuture;
-import io.vertx.core.Future;
-import io.vertx.core.Launcher;
+import io.vertx.core.*;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 
@@ -41,7 +38,11 @@ public class MainVerticle extends AbstractVerticle {
     Future<String> audioStreamFuture = future();
     vertx.deployVerticle("boiler.vroom.audiostream.AudioStreamVerticle", audioStreamFuture);
 
-    CompositeFuture.all(djBoothFuture, audioStreamFuture).setHandler(ar -> {
+    Future<String> clientFuture = future();
+    vertx.deployVerticle("boiler.vroom.client.ClientVerticle",
+      new DeploymentOptions().setInstances(2), clientFuture);
+
+    CompositeFuture.all(djBoothFuture, audioStreamFuture, clientFuture).setHandler(ar -> {
       if (ar.succeeded()) {
         logger.info("Boiler Vroom started");
         startFuture.complete();

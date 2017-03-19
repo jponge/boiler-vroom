@@ -17,6 +17,7 @@
 module.exports = {
   entry: {
     'dj-booth-bundle': './src/main/javascript/dj-booth.js',
+    'client-bundle': './src/main/javascript/client.js',
   },
   output: {
     filename: '[name].js',
