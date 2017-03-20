@@ -20,6 +20,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Boiler Vroom</title>
+  <style>
+    input[type="range"] {
+      margin-bottom: 2em;
+    }
+  </style>
 </head>
 
 <body>
@@ -40,13 +45,35 @@
       <a href="#" id="seq-1" class="btn btn-lg btn-default btn-block">Kick</a>
     </div>
     <div class="col-md-3">
-      <a href="#" id="seq-2" class="btn btn-lg btn-default btn-block">Kick + Clap</a>
+      <a href="#" id="seq-2" class="btn btn-lg btn-default btn-block">+ Clap</a>
     </div>
     <div class="col-md-3">
-      <a href="#" id="seq-3" class="btn btn-lg btn-default btn-block">Kick + Clap + Shaker</a>
+      <a href="#" id="seq-3" class="btn btn-lg btn-default btn-block">+ Shaker</a>
     </div>
     <div class="col-md-3">
-      <a href="#" id="seq-4" class="btn btn-lg btn-default btn-block">Fancy with snare</a>
+      <a href="#" id="seq-4" class="btn btn-lg btn-default btn-block">+ Snare</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Volumes</h3>
+    </div>
+    <div class="col-md-3">
+      <label for="vol-seq-1">Kick</label>
+      <input id="vol-seq-1" type="range" min="0" max="127" value="127" step="1"/>
+    </div>
+    <div class="col-md-3">
+      <label for="vol-seq-2">Clap</label>
+      <input id="vol-seq-2" type="range" min="0" max="127" value="127" step="1"/>
+    </div>
+    <div class="col-md-3">
+      <label for="vol-seq-3">Snare</label>
+      <input id="vol-seq-3" type="range" min="0" max="127" value="127" step="1"/>
+    </div>
+    <div class="col-md-3">
+      <label for="vol-seq-4">Shaker</label>
+      <input id="vol-seq-4" type="range" min="0" max="127" value="127" step="1"/>
     </div>
   </div>
 

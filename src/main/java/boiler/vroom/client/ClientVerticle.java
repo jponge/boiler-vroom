@@ -62,6 +62,9 @@ public class ClientVerticle extends AbstractVerticle {
         case "sequence":
           eventBus.publish("boilervroom.committed", request);
           break;
+        case "sequencer-slot-volume":
+          eventBus.publish("boilervroom.committed", request);
+          break;
         default:
           logger.error("Unknown client request: " + request);
       }

@@ -34,7 +34,7 @@ function main(eventBus) {
   }
 
   seqs.forEach(n => {
-    const handler = (e) => {
+    const tapHandler = (e) => {
       changeActiveSeqButton(n)
       eventBus.publish("boilervroom.fromclients", {
         type: 'sequence',
@@ -42,8 +42,8 @@ function main(eventBus) {
       })
     }
     const button = document.getElementById(`seq-${n}`)
-    button.addEventListener("touchstart", handler)
-    button.addEventListener("click", handler)
+    button.addEventListener("touchstart", tapHandler)
+    button.addEventListener("click", tapHandler)
   })
 
   eventBus.registerHandler("boilervroom.committed", (err, message) => {
@@ -55,10 +55,41 @@ function main(eventBus) {
       case "sequence":
         changeActiveSeqButton(message.body.value)
         break
+      case "sequencer-slot-volume":
+        break
       default:
         console.log("Unknown decision: " + message.body)
     }
   })
+
+  function changeSequencerSlotVolume(slot, value) {
+    document.getElementById(`vol-seq-${slot}`).value = value
+  }
+
+  eventBus.registerHandler("boilervroom.fromtraktor", (err, message) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+    switch (message.body.type) {
+      case "sequencer-slot-volume":
+        changeSequencerSlotVolume(message.body.slot, message.body.value)
+        break
+      default:
+        console.log("Unknow actiom from Traktor: " + message.body)
+    }
+  })
+
+  for (let n = 1; n <=4; n++) {
+    const slider = document.getElementById(`vol-seq-${n}`)
+    slider.addEventListener("change", (event) => {
+      eventBus.publish("boilervroom.fromclients", {
+        type: "sequencer-slot-volume",
+        slot: n,
+        value: parseInt(slider.value)
+      })
+    })
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -136,6 +136,22 @@ document.addEventListener('DOMContentLoaded', () => {
       serverAlertDisplay.classList.remove("btn-danger")
       serverAlertDisplay.classList.add("btn-success")
 
+      const volumeNoteSlots = {
+        "C": 1,
+        "D": 2,
+        "E": 3,
+        "F": 4
+      }
+      traktorIn.addListener("noteon", 1, (event) => {
+        if (event.note.octave == -2) {
+          eventBus.publish("boilervroom.fromtraktor", {
+            type: "sequencer-slot-volume",
+            slot: volumeNoteSlots[event.note.name],
+            value: event.rawVelocity
+          })
+        }
+      })
+
       const sourceAlertDisplay = document.getElementById("source-alert")
       eventBus.registerHandler("boilervroom.audiosource", (err, message) => {
         if (!err && message.body.connected) {
@@ -156,11 +172,15 @@ document.addEventListener('DOMContentLoaded', () => {
           case "sequence":
             sequencer.use(patterns[message.body.value - 1])
             break
+          case "sequencer-slot-volume":
+            traktorOut.sendControlChange(message.body.slot - 1, message.body.value, 1)
+            break
           default:
             console.log("Unknown decision: " + message.body)
         }
       })
     }
+
     eventBus.onclose = () => {
       serverAlertDisplay.classList.add("btn-danger")
       serverAlertDisplay.classList.remove("btn-success")
