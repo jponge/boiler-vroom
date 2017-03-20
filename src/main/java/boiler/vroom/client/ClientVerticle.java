@@ -18,7 +18,10 @@ package boiler.vroom.client;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.MessageConsumer;
+import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
@@ -45,6 +48,22 @@ public class ClientVerticle extends AbstractVerticle {
 
     router.get("/assets/*").handler(staticHandler);
     router.get("/").handler(context -> context.reroute("/assets/client.html"));
+
+    router.get("/audiostream").handler(context -> {
+      logger.info("New streaming client: " + context.request().remoteAddress());
+      HttpServerResponse response = context.response();
+      response.setStatusCode(200);
+      response.setChunked(true);
+      response.putHeader("Content-Type", "audio/ogg");
+      MessageConsumer<Buffer> consumer = eventBus.consumer("boilervroom.audiostream");
+      consumer.bodyStream().handler(buffer -> {
+        if (!response.writeQueueFull()) {
+          response.write(buffer);
+        }
+      });
+      response.endHandler(v -> consumer.unregister());
+      response.exceptionHandler(v -> consumer.unregister());
+    });
 
     SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
     PermittedOptions permittedOptions = new PermittedOptions().setAddressRegex("boilervroom\\..+");

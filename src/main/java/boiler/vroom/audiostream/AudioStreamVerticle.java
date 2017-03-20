@@ -18,11 +18,14 @@ package boiler.vroom.audiostream;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.MessageProducer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.core.net.NetSocket;
 
 /**
  * @author <a href="https://julien.ponge.org/">Julien Ponge</a>
@@ -51,18 +54,27 @@ public class AudioStreamVerticle extends AbstractVerticle {
           inUse = true;
           eventBus.publish(ANNOUNCE_DESTINATION, CONNECTED_MESSAGE);
           logger.info("Connected to an audio source");
-          request.netSocket()
+          MessageProducer<Buffer> publisher = eventBus.publisher("boilervroom.audiostream");
+          NetSocket netSocket = request.netSocket();
+          netSocket
             .write("HTTP/1.0 200 OK\r\n\r\n")
-            .handler(buffer -> {
-              // TODO
-            }).endHandler(v -> {
-            inUse = false;
-            eventBus.publish(ANNOUNCE_DESTINATION, DISCONNECTED_MESSAGE);
-            logger.info("Disconnected from an audio source");
-          }).exceptionHandler(t -> {
-            logger.error(t);
-            eventBus.publish(ANNOUNCE_DESTINATION, DISCONNECTED_MESSAGE);
-          });
+            .handler(data -> {
+              logger.info("data " + data.length() + " " + publisher.writeQueueFull());
+              if (!publisher.writeQueueFull()) {
+                publisher.write(data);
+              }
+            })
+            .endHandler(v -> {
+              inUse = false;
+              publisher.close();
+              eventBus.publish(ANNOUNCE_DESTINATION, DISCONNECTED_MESSAGE);
+              logger.info("Disconnected from an audio source");
+            })
+            .exceptionHandler(t -> {
+              logger.error(t);
+              publisher.close();
+              eventBus.publish(ANNOUNCE_DESTINATION, DISCONNECTED_MESSAGE);
+            });
         }
       }).listen(8000, ar -> {
       if (ar.succeeded()) {

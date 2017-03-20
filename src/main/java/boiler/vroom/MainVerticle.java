@@ -42,8 +42,7 @@ public class MainVerticle extends AbstractVerticle {
     vertx.deployVerticle("boiler.vroom.audiostream.AudioStreamVerticle", audioStreamFuture);
 
     Future<String> clientFuture = future();
-    vertx.deployVerticle("boiler.vroom.client.ClientVerticle",
-      new DeploymentOptions().setInstances(2), clientFuture);
+    vertx.deployVerticle("boiler.vroom.client.ClientVerticle", clientFuture);
 
     CompositeFuture.all(djBoothFuture, audioStreamFuture, clientFuture).setHandler(ar -> {
       if (ar.succeeded()) {
