@@ -19,6 +19,7 @@ package boiler.vroom.client;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
@@ -54,6 +55,17 @@ public class ClientVerticle extends AbstractVerticle {
     sockJSHandler.bridge(bridgeOptions);
 
     router.route("/eventbus/*").handler(sockJSHandler);
+
+    eventBus.consumer("boilervroom.fromclients", message -> {
+      JsonObject request = (JsonObject) message.body();
+      switch (request.getString("type")) {
+        case "sequence":
+          eventBus.publish("boilervroom.committed", request);
+          break;
+        default:
+          logger.error("Unknown client request: " + request);
+      }
+    });
 
     vertx.createHttpServer()
       .requestHandler(router::accept)

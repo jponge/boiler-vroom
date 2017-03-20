@@ -17,11 +17,53 @@
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css'
 import EventBus from 'vertx3-eventbus-client'
 
-document.addEventListener('DOMContentLoaded', () => {
+function main(eventBus) {
 
-  const eventBus = new EventBus("/eventbus")
-  eventBus.onopen = () => {
-
+  const seqs = [1, 2, 3, 4];
+  function changeActiveSeqButton(n) {
+    const pressedButton = document.getElementById(`seq-${n}`);
+    pressedButton.classList.add("btn-primary")
+    seqs.forEach((i) => {
+      if (i != n) {
+        const inactiveButton = document.getElementById(`seq-${i}`);
+        inactiveButton.classList.remove("btn-primary")
+        inactiveButton.classList.add("btn-default")
+        inactiveButton.classList.remove("active")
+      }
+    })
   }
 
+  seqs.forEach(n => {
+    const handler = (e) => {
+      changeActiveSeqButton(n)
+      eventBus.publish("boilervroom.fromclients", {
+        type: 'sequence',
+        value: n
+      })
+    }
+    const button = document.getElementById(`seq-${n}`)
+    button.addEventListener("touchstart", handler)
+    button.addEventListener("click", handler)
+  })
+
+  eventBus.registerHandler("boilervroom.committed", (err, message) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+    switch (message.body.type) {
+      case "sequence":
+        changeActiveSeqButton(message.body.value)
+        break
+      default:
+        console.log("Unknown decision: " + message.body)
+    }
+  })
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const eventBus = new EventBus("/eventbus")
+  eventBus.onopen = () => {
+    main(eventBus)
+  }
 })
