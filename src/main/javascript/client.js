@@ -15,7 +15,7 @@
  */
 
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css'
-import EventBus from './vertx-eventbus'
+import EventBus from 'vertx3-eventbus-client'
 
 document.addEventListener('DOMContentLoaded', () => {
 

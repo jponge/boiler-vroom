@@ -16,7 +16,7 @@
 
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css'
 import * as midiSequencer from 'webmidi-sequencer'
-import EventBus from './vertx-eventbus'
+import EventBus from 'vertx3-eventbus-client'
 
 document.addEventListener('DOMContentLoaded', () => {
 
