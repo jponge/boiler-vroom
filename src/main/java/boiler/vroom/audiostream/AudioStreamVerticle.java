@@ -19,16 +19,11 @@ package boiler.vroom.audiostream;
 import com.julienviet.childprocess.Process;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.EventBus;
-import io.vertx.core.eventbus.MessageProducer;
 import io.vertx.core.http.HttpClientOptions;
-import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-
-import java.util.Arrays;
 
 import static java.util.Arrays.asList;
 
@@ -71,54 +66,6 @@ public class AudioStreamVerticle extends AbstractVerticle {
         runVLC();
       }
     });
-
-//    vlcProcess = Process.create(vertx, "/Applications/VLC.app/Contents/MacOS/VLC", asList(
-//      "http://localhost:8000/stream",
-//      "--sout=#transcode{acodec=mp3,ab=128,channels=2,samplerate=44100}:http{dst=:8001/stream.mp3"
-//    ));
-//    vlcProcess.start(process -> vlcFuture.complete());
-//    vlcProcess.exitHandler(exitCode -> {
-//      String message = "VLC exited with status code " + exitCode;
-//      if (!vlcFuture.isComplete()) {
-//        vlcFuture.fail(message);
-//      }
-//      logger.warn(message);
-//    });
-//    vlcProcess.stdout().handler(logger::info);
-//    vlcProcess.stderr().handler(logger::warn);
-
-
-//    vertx.createHttpServer()
-//      .requestHandler((HttpServerRequest request) -> {
-//        if (inUse) {
-//          logger.error("Already connected to an audio source");
-//          request.response().setStatusCode(409).end();
-//        } else {
-//          inUse = true;
-//          eventBus.publish(ANNOUNCE_DESTINATION, CONNECTED_MESSAGE);
-//          logger.info("Connected to an audio source");
-//          request.netSocket()
-//            .write("HTTP/1.0 200 OK\r\n\r\n")
-//            .handler(buffer -> {
-//              // TODO
-//            }).endHandler(v -> {
-//            inUse = false;
-//            eventBus.publish(ANNOUNCE_DESTINATION, DISCONNECTED_MESSAGE);
-//            logger.info("Disconnected from an audio source");
-//          }).exceptionHandler(t -> {
-//            logger.error(t);
-//            eventBus.publish(ANNOUNCE_DESTINATION, DISCONNECTED_MESSAGE);
-//          });
-//        }
-//      }).listen(8000, ar -> {
-//      if (ar.succeeded()) {
-//        logger.info("Audio source server started");
-//        startFuture.complete();
-//      } else {
-//        logger.error(ar.cause());
-//        startFuture.fail(ar.cause());
-//      }
-//    });
   }
 
   private void runVLC() {
