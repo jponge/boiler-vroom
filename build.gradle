@@ -40,6 +40,7 @@ def doOnChange = './gradlew classes webAssets'
 dependencies {
   compile "io.vertx:vertx-core:$vertxVersion"
   compile "io.vertx:vertx-web:$vertxVersion"
+  compile "com.julienviet:childprocess-vertx-ext:1.1.1"
   testCompile "junit:junit:4.12"
   testCompile "io.vertx:vertx-unit:$vertxVersion"
 }

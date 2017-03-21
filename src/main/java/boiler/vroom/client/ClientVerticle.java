@@ -18,7 +18,10 @@ package boiler.vroom.client;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.eventbus.MessageConsumer;
+import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -68,6 +71,28 @@ public class ClientVerticle extends AbstractVerticle {
         default:
           logger.error("Unknown client request: " + request);
       }
+    });
+
+    router.get("/audiostream").handler(context -> {
+      logger.info("New streaming client: " + context.request().remoteAddress());
+      HttpServerResponse response = context.response();
+      response.setStatusCode(200);
+      response.setChunked(true);
+      response.putHeader("Content-Type", "audio/mpeg");
+      MessageConsumer<Buffer> consumer = eventBus.consumer("boilervroom.audiostream");
+      consumer.bodyStream().handler(buffer -> {
+        if (!response.writeQueueFull()) {
+          response.write(buffer);
+        }
+      });
+      response.endHandler(v -> {
+        logger.info("Stream client left: " + context.request().remoteAddress());
+        consumer.unregister();
+      });
+      response.exceptionHandler(t -> {
+        logger.info("Stream client left with error: " + context.request().remoteAddress(), t);
+        consumer.unregister();
+      });
     });
 
     vertx.createHttpServer()
