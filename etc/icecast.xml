@@ -2,8 +2,8 @@
     <!-- location and admin are two arbitrary strings that are e.g. visible
          on the server info page of the icecast web interface
          (server_version.xsl). -->
-    <location>Earth</location>
-    <admin>icemaster@localhost</admin>
+    <location>In Your Cloud</location>
+    <admin>nobody@nowhere.io</admin>
 
     <!-- IMPORTANT!
          Especially for inexperienced users:
@@ -25,11 +25,11 @@
              it also significantly increases latency between the source
              client and listening client.  For low-latency setups, you
              might want to disable this. -->
-        <burst-on-connect>1</burst-on-connect>
+        <burst-on-connect>0</burst-on-connect>
         <!-- same as burst-on-connect, but this allows for being more
              specific on how much to burst. Most people won't need to
              change from the default 64k. Applies to all mountpoints  -->
-        <burst-size>65535</burst-size>
+        <!--<burst-size>65535</burst-size>-->
     </limits>
 
     <authentication>
