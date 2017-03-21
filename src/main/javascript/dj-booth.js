@@ -163,6 +163,17 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       })
 
+      const transcodingButton = document.getElementById("start-transcoding")
+      transcodingButton.addEventListener("click", (e) => {
+        eventBus.publish("boilervroom.transcoding", {
+          action: "start"
+        })
+        transcodingButton.classList.add("disabled")
+        transcodingButton.classList.add("btn-default")
+        transcodingButton.classList.remove("btn-primary")
+        transcodingButton.innerHTML = "(VLC started)"
+      })
+
       eventBus.registerHandler("boilervroom.committed", (err, message) => {
         if (err) {
           console.log(err)
