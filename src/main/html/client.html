@@ -35,6 +35,9 @@
     <div class="col-md-12">
       <h1>Boiler Vroom</h1>
     </div>
+  </div>
+
+  <div id="player-controls" class="row">
     <div class="col-md-12">
       <audio autoplay controls preload="none">
         <source src="/audiostream" type="audio/mpeg"/>
@@ -42,43 +45,45 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <h2>Remix deck sequence</h2>
+  <div id="remix-deck-controls">
+    <div class="row">
+      <div class="col-md-12">
+        <h2>Remix deck sequence</h2>
+      </div>
+      <div class="col-md-3">
+        <a href="#" id="seq-1" class="btn btn-lg btn-default btn-block">Kick</a>
+      </div>
+      <div class="col-md-3">
+        <a href="#" id="seq-2" class="btn btn-lg btn-default btn-block">+ Clap</a>
+      </div>
+      <div class="col-md-3">
+        <a href="#" id="seq-3" class="btn btn-lg btn-default btn-block">+ Shaker</a>
+      </div>
+      <div class="col-md-3">
+        <a href="#" id="seq-4" class="btn btn-lg btn-default btn-block">+ Snare</a>
+      </div>
     </div>
-    <div class="col-md-3">
-      <a href="#" id="seq-1" class="btn btn-lg btn-default btn-block">Kick</a>
-    </div>
-    <div class="col-md-3">
-      <a href="#" id="seq-2" class="btn btn-lg btn-default btn-block">+ Clap</a>
-    </div>
-    <div class="col-md-3">
-      <a href="#" id="seq-3" class="btn btn-lg btn-default btn-block">+ Shaker</a>
-    </div>
-    <div class="col-md-3">
-      <a href="#" id="seq-4" class="btn btn-lg btn-default btn-block">+ Snare</a>
-    </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      <h3>Volumes</h3>
-    </div>
-    <div class="col-md-3">
-      <label for="vol-seq-1">Kick</label>
-      <input id="vol-seq-1" type="range" min="0" max="127" value="127" step="1"/>
-    </div>
-    <div class="col-md-3">
-      <label for="vol-seq-2">Clap</label>
-      <input id="vol-seq-2" type="range" min="0" max="127" value="127" step="1"/>
-    </div>
-    <div class="col-md-3">
-      <label for="vol-seq-3">Snare</label>
-      <input id="vol-seq-3" type="range" min="0" max="127" value="127" step="1"/>
-    </div>
-    <div class="col-md-3">
-      <label for="vol-seq-4">Shaker</label>
-      <input id="vol-seq-4" type="range" min="0" max="127" value="127" step="1"/>
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Volumes</h3>
+      </div>
+      <div class="col-md-3">
+        <label for="vol-seq-1">Kick</label>
+        <input id="vol-seq-1" type="range" min="0" max="127" value="127" step="1"/>
+      </div>
+      <div class="col-md-3">
+        <label for="vol-seq-2">Clap</label>
+        <input id="vol-seq-2" type="range" min="0" max="127" value="127" step="1"/>
+      </div>
+      <div class="col-md-3">
+        <label for="vol-seq-3">Snare</label>
+        <input id="vol-seq-3" type="range" min="0" max="127" value="127" step="1"/>
+      </div>
+      <div class="col-md-3">
+        <label for="vol-seq-4">Shaker</label>
+        <input id="vol-seq-4" type="range" min="0" max="127" value="127" step="1"/>
+      </div>
     </div>
   </div>
 
