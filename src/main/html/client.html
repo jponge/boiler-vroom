@@ -24,6 +24,9 @@
     input[type="range"] {
       margin-bottom: 2em;
     }
+    .section {
+      margin-top: 2em;
+    }
   </style>
 </head>
 
@@ -32,23 +35,23 @@
 <div class="container">
 
   <div class="row">
-    <div class="col-md-12">
-      <h1>Boiler Vroom</h1>
+    <div class="col-md-12 page-header">
+      <h1><i class="fa fa-headphones" aria-hidden="true"></i> Boiler Vroom</h1>
     </div>
   </div>
 
-  <div id="player-controls" class="row">
+  <div id="player-controls" class="row section">
     <div class="col-md-12">
-      <audio autoplay controls preload="none">
+      <audio controls preload="none">
         <source src="/audiostream" type="audio/mpeg"/>
       </audio>
     </div>
   </div>
 
-  <div id="mixer-controls">
+  <div id="mixer-controls" class="section">
     <div class="row">
       <div class="col-md-12">
-        <h3>Mixer</h3>
+        <h3><i class="fa fa-sliders" aria-hidden="true"></i> Mixer</h3>
       </div>
       <div class="row">
         <div class="col-md-4 col-xs-4">
@@ -79,10 +82,13 @@
     </div>
   </div>
 
-  <div id="remix-deck-controls">
+  <div id="remix-deck-controls" class="section">
     <div class="row">
       <div class="col-md-12">
-        <h3>Remix deck sequence</h3>
+        <h3><i class="fa fa-th" aria-hidden="true"></i> Remix deck sequence</h3>
+      </div>
+      <div class="col-md-12">
+        <h4>Patterns</h4>
       </div>
       <div class="col-md-3">
         <a href="#remix-deck-controls" id="seq-1" class="btn btn-lg btn-default btn-block">Kick</a>
@@ -100,7 +106,7 @@
 
     <div class="row">
       <div class="col-md-12">
-        <h4>Volumes</h4>
+        <h4>Samples volumes</h4>
       </div>
       <div class="col-md-3">
         <label for="vol-seq-1">Kick</label>

@@ -15,6 +15,7 @@
  */
 
 import Bootstrap from 'bootstrap/dist/css/bootstrap.css'
+import FontAwesome from 'font-awesome/css/font-awesome.min.css'
 import EventBus from 'vertx3-eventbus-client'
 
 function main(eventBus) {
