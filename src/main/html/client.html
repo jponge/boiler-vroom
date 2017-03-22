@@ -45,28 +45,62 @@
     </div>
   </div>
 
+  <div id="mixer-controls">
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Mixer</h3>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-xs-4">
+          <label for="deck1-eq-high">High</label>
+          <input id="deck1-eq-high" type="range" min="0" max="127" value="63" step="1"/>
+          <label for="deck1-eq-mid">Mid</label>
+          <input id="deck1-eq-mid" type="range" min="0" max="127" value="63" step="1"/>
+          <label for="deck1-eq-low">Low</label>
+          <input id="deck1-eq-low" type="range" min="0" max="127" value="63" step="1"/>
+        </div>
+        <div class="col-md-2 col-xs-2">
+          <label for="deck1-volume">Vol</label>
+          <input id="deck1-volume" type="range" min="0" max="127" value="127" step="1" orient="vertical" style="-webkit-appearance: slider-vertical;"/>
+        </div>
+        <div class="col-md-2 col-xs-2">
+          <label for="deck2-volume">Vol</label>
+          <input id="deck2-volume" type="range" min="0" max="127" value="127" step="1" orient="vertical" style="-webkit-appearance: slider-vertical;"/>
+        </div>
+        <div class="col-md-4 col-xs-4">
+          <label for="deck2-eq-high">High</label>
+          <input id="deck2-eq-high" type="range" min="0" max="127" value="63" step="1"/>
+          <label for="deck2-eq-mid">Mid</label>
+          <input id="deck2-eq-mid" type="range" min="0" max="127" value="63" step="1"/>
+          <label for="deck2-eq-low">Low</label>
+          <input id="deck2-eq-low" type="range" min="0" max="127" value="63" step="1"/>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="remix-deck-controls">
     <div class="row">
       <div class="col-md-12">
-        <h2>Remix deck sequence</h2>
+        <h3>Remix deck sequence</h3>
       </div>
       <div class="col-md-3">
-        <a href="#" id="seq-1" class="btn btn-lg btn-default btn-block">Kick</a>
+        <a href="#remix-deck-controls" id="seq-1" class="btn btn-lg btn-default btn-block">Kick</a>
       </div>
       <div class="col-md-3">
-        <a href="#" id="seq-2" class="btn btn-lg btn-default btn-block">+ Clap</a>
+        <a href="#remix-deck-controls" id="seq-2" class="btn btn-lg btn-default btn-block">+ Clap</a>
       </div>
       <div class="col-md-3">
-        <a href="#" id="seq-3" class="btn btn-lg btn-default btn-block">+ Shaker</a>
+        <a href="#remix-deck-controls" id="seq-3" class="btn btn-lg btn-default btn-block">+ Shaker</a>
       </div>
       <div class="col-md-3">
-        <a href="#" id="seq-4" class="btn btn-lg btn-default btn-block">+ Snare</a>
+        <a href="#remix-deck-controls" id="seq-4" class="btn btn-lg btn-default btn-block">+ Snare</a>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-12">
-        <h3>Volumes</h3>
+        <h4>Volumes</h4>
       </div>
       <div class="col-md-3">
         <label for="vol-seq-1">Kick</label>

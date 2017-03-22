@@ -57,6 +57,9 @@ function main(eventBus) {
         break
       case "sequencer-slot-volume":
         break
+      case "mixer-control":
+        changeMixerControl(message.body.id, message.body.value)
+        break
       default:
         console.log("Unknown decision: " + message.body)
     }
@@ -64,6 +67,10 @@ function main(eventBus) {
 
   function changeSequencerSlotVolume(slot, value) {
     document.getElementById(`vol-seq-${slot}`).value = value
+  }
+
+  function changeMixerControl(id, value) {
+    document.getElementById(id).value = value
   }
 
   eventBus.registerHandler("boilervroom.fromtraktor", (err, message) => {

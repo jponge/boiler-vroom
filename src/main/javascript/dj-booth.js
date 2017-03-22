@@ -152,6 +152,24 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       })
 
+      const mixerControlsForCode = [
+        "deck1-eq-low",
+        "deck1-eq-mid",
+        "deck1-eq-high",
+        "deck1-volume",
+        "deck2-eq-low",
+        "deck2-eq-mid",
+        "deck2-eq-high",
+        "deck2-volume"
+      ]
+      traktorIn.addListener("controlchange", 2, (event) => {
+        eventBus.publish("boilervroom.committed", {
+          type: "mixer-control",
+          id: mixerControlsForCode[event.controller.number],
+          value: event.value
+        })
+      })
+
       const sourceAlertDisplay = document.getElementById("source-alert")
       eventBus.registerHandler("boilervroom.audiosource", (err, message) => {
         if (!err && message.body.connected) {
@@ -185,6 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
             break
           case "sequencer-slot-volume":
             traktorOut.sendControlChange(message.body.slot - 1, message.body.value, 1)
+            break
+          case "mixer-control":
             break
           default:
             console.log("Unknown decision: " + message.body)

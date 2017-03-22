@@ -73,7 +73,7 @@ public class AudioStreamVerticle extends AbstractVerticle {
 
     vlcProcess = Process.create(vertx, "/Applications/VLC.app/Contents/MacOS/VLC", asList(
       "http://localhost:8000/stream",
-      "--sout=#transcode{acodec=mp3,ab=96,channels=2,samplerate=44100}:http{dst=:8001/stream.mp3",
+      "--sout=#transcode{acodec=mp3,ab=64,channels=2,samplerate=44100}:http{dst=:8001/stream.mp3",
       "--playlist-autostart"
     ));
 
@@ -83,7 +83,9 @@ public class AudioStreamVerticle extends AbstractVerticle {
 
     vlcProcess.start(process -> {
       vertx.setTimer(3000, n -> {
-        HttpClientOptions options = new HttpClientOptions().setDefaultHost("localhost").setDefaultPort(8001);
+        HttpClientOptions options = new HttpClientOptions()
+          .setDefaultHost("localhost")
+          .setDefaultPort(8001);
         vertx.createHttpClient(options)
           .getNow("/stream.mp3", response -> {
             eventBus.publish(ANNOUNCE_DESTINATION, CONNECTED_MESSAGE);
