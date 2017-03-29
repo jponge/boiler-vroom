@@ -25,6 +25,7 @@ import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.core.shareddata.Counter;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
@@ -38,8 +39,12 @@ public class ClientVerticle extends AbstractVerticle {
 
   private final Logger logger = LoggerFactory.getLogger(ClientVerticle.class);
 
+  private Counter likesCounter;
+
   @Override
   public void start(Future<Void> startFuture) throws Exception {
+
+    vertx.sharedData().getCounter("likes", ar -> likesCounter = ar.result());
 
     EventBus eventBus = vertx.eventBus();
 
@@ -67,6 +72,26 @@ public class ClientVerticle extends AbstractVerticle {
           break;
         case "sequencer-slot-volume":
           eventBus.publish("boilervroom.committed", request);
+          break;
+        case "like":
+          likesCounter.addAndGet(request.getLong("value"), ar -> {
+            if (ar.succeeded()) {
+              JsonObject payload = new JsonObject()
+                .put("type", "like-update")
+                .put("value", ar.result());
+              eventBus.publish("boilervroom.committed", payload);
+            }
+          });
+          break;
+        case "like-get":
+          likesCounter.get(ar -> {
+            if (ar.succeeded()) {
+              JsonObject payload = new JsonObject()
+                .put("type", "like-update")
+                .put("value", ar.result());
+              eventBus.publish("boilervroom.committed", payload);
+            }
+          });
           break;
         default:
           logger.error("Unknown client request: " + request);

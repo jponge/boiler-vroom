@@ -61,10 +61,19 @@ function main(eventBus) {
       case "mixer-control":
         changeMixerControl(message.body.id, message.body.value)
         break
+      case "like-update":
+        changeLikeCount(message.body.value)
+        break
       default:
         console.log("Unknown decision: " + message.body)
     }
   })
+
+  function changeLikeCount(value) {
+    document.getElementById("likes-counter").innerHTML = `${value}`
+  }
+
+  eventBus.send("boilervroom.fromclients", {type: "like-get"})
 
   function changeSequencerSlotVolume(slot, value) {
     document.getElementById(`vol-seq-${slot}`).value = value
@@ -98,6 +107,25 @@ function main(eventBus) {
       })
     })
   }
+
+  const likeButton = document.getElementById("like-button");
+  const dislikeButton = document.getElementById("dislike-button");
+  function likeHandlerMaker(incr) {
+    return (event) => {
+      eventBus.publish("boilervroom.fromclients", {
+        type: "like",
+        value: incr
+      })
+      likeButton.classList.toggle("disabled")
+      dislikeButton.classList.toggle("disabled")
+      setTimeout(() => {
+        likeButton.classList.toggle("disabled")
+        dislikeButton.classList.toggle("disabled")
+      }, 5000)
+    }
+  }
+  likeButton.addEventListener("click", likeHandlerMaker(1))
+  dislikeButton.addEventListener("click", likeHandlerMaker(-1))
 }
 
 document.addEventListener('DOMContentLoaded', () => {

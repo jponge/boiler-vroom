@@ -24,6 +24,7 @@
     input[type="range"] {
       margin-bottom: 2em;
     }
+
     .section {
       margin-top: 2em;
     }
@@ -37,6 +38,19 @@
   <div class="row">
     <div class="col-md-12 page-header">
       <h1><i class="fa fa-headphones" aria-hidden="true"></i> Boiler Vroom</h1>
+    </div>
+  </div>
+
+  <div class="row" id="likes">
+    <div class="col-md-12">
+      <button id="like-button" class="btn btn-lg btn-success">
+        <i class="fa fa-lg fa-thumbs-up" aria-hidden="true"></i>
+      </button>
+      <button id="dislike-button" class="btn btn-lg btn-danger">
+        <i class="fa fa-lg fa-thumbs-down" aria-hidden="true"></i>
+      </button>
+      </p>
+      <h4>Karma: <span id="likes-counter">0</span></h4>
     </div>
   </div>
 
@@ -64,11 +78,13 @@
         </div>
         <div class="col-md-2 col-xs-2">
           <label for="deck1-volume">Vol</label>
-          <input id="deck1-volume" type="range" min="0" max="127" value="127" step="1" orient="vertical" style="-webkit-appearance: slider-vertical;"/>
+          <input id="deck1-volume" type="range" min="0" max="127" value="127" step="1" orient="vertical"
+                 style="-webkit-appearance: slider-vertical;"/>
         </div>
         <div class="col-md-2 col-xs-2">
           <label for="deck2-volume">Vol</label>
-          <input id="deck2-volume" type="range" min="0" max="127" value="127" step="1" orient="vertical" style="-webkit-appearance: slider-vertical;"/>
+          <input id="deck2-volume" type="range" min="0" max="127" value="127" step="1" orient="vertical"
+                 style="-webkit-appearance: slider-vertical;"/>
         </div>
         <div class="col-md-4 col-xs-4">
           <label for="deck2-eq-high">High</label>
