@@ -24,7 +24,6 @@
     input[type="range"] {
       margin-bottom: 2em;
     }
-
     .section {
       margin-top: 2em;
     }
@@ -37,7 +36,7 @@
 
   <div class="row">
     <div class="col-md-12 page-header">
-      <h1><i class="fa fa-headphones" aria-hidden="true"></i> Boiler Vroom</h1>
+      <h1><i class="fa fa-headphones fa-lg" aria-hidden="true"></i> Boiler Vroom</h1>
     </div>
   </div>
 
@@ -67,36 +66,35 @@
       <div class="col-md-12">
         <h3><i class="fa fa-sliders" aria-hidden="true"></i> Mixer</h3>
       </div>
-      <div class="row">
-        <div class="col-md-4 col-xs-4">
-          <label for="deck1-eq-high">High</label>
-          <input id="deck1-eq-high" type="range" min="0" max="127" value="63" step="1"/>
-          <label for="deck1-eq-mid">Mid</label>
-          <input id="deck1-eq-mid" type="range" min="0" max="127" value="63" step="1"/>
-          <label for="deck1-eq-low">Low</label>
-          <input id="deck1-eq-low" type="range" min="0" max="127" value="63" step="1"/>
-        </div>
-        <div class="col-md-2 col-xs-2">
-          <label for="deck1-volume">Vol</label>
-          <input id="deck1-volume" type="range" min="0" max="127" value="127" step="1" orient="vertical"
-                 style="-webkit-appearance: slider-vertical;"/>
-        </div>
-        <div class="col-md-2 col-xs-2">
-          <label for="deck2-volume">Vol</label>
-          <input id="deck2-volume" type="range" min="0" max="127" value="127" step="1" orient="vertical"
-                 style="-webkit-appearance: slider-vertical;"/>
-        </div>
-        <div class="col-md-4 col-xs-4">
-          <label for="deck2-eq-high">High</label>
-          <input id="deck2-eq-high" type="range" min="0" max="127" value="63" step="1"/>
-          <label for="deck2-eq-mid">Mid</label>
-          <input id="deck2-eq-mid" type="range" min="0" max="127" value="63" step="1"/>
-          <label for="deck2-eq-low">Low</label>
-          <input id="deck2-eq-low" type="range" min="0" max="127" value="63" step="1"/>
-        </div>
+      <div class="col-md-4 col-xs-4">
+        <label for="deck1-eq-high">High</label>
+        <input id="deck1-eq-high" type="range" min="0" max="127" value="63" step="1"/>
+        <label for="deck1-eq-mid">Mid</label>
+        <input id="deck1-eq-mid" type="range" min="0" max="127" value="63" step="1"/>
+        <label for="deck1-eq-low">Low</label>
+        <input id="deck1-eq-low" type="range" min="0" max="127" value="63" step="1"/>
+      </div>
+      <div class="col-md-2 col-xs-2">
+        <label for="deck1-volume">Vol</label>
+        <input id="deck1-volume" type="range" min="0" max="127" value="127" step="1" orient="vertical"
+               style="width: 40px; -webkit-appearance: slider-vertical;"/>
+      </div>
+      <div class="col-md-2 col-xs-2">
+        <label for="deck2-volume">Vol</label>
+        <input id="deck2-volume" type="range" min="0" max="127" value="127" step="1" orient="vertical"
+               style="width: 40px; -webkit-appearance: slider-vertical;"/>
+      </div>
+      <div class="col-md-4 col-xs-4">
+        <label for="deck2-eq-high">High</label>
+        <input id="deck2-eq-high" type="range" min="0" max="127" value="63" step="1"/>
+        <label for="deck2-eq-mid">Mid</label>
+        <input id="deck2-eq-mid" type="range" min="0" max="127" value="63" step="1"/>
+        <label for="deck2-eq-low">Low</label>
+        <input id="deck2-eq-low" type="range" min="0" max="127" value="63" step="1"/>
       </div>
     </div>
   </div>
+
 
   <div id="remix-deck-controls" class="section">
     <div class="row">
