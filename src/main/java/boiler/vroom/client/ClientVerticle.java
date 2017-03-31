@@ -93,6 +93,12 @@ public class ClientVerticle extends AbstractVerticle {
             }
           });
           break;
+        case "filter-button":
+          eventBus.publish("boilervroom.committed", request);
+          break;
+        case "filter-range":
+          eventBus.publish("boilervroom.committed", request);
+          break;
         default:
           logger.error("Unknown client request: " + request);
       }

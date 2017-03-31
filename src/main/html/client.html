@@ -24,6 +24,7 @@
     input[type="range"] {
       margin-bottom: 2em;
     }
+
     .section {
       margin-top: 2em;
     }
@@ -55,7 +56,8 @@
 
   <div id="player-controls" class="row section">
     <div class="col-md-12">
-      <h3><i class="fa fa-headphones" aria-hidden="true"></i> Stream <small>(with a small delay)</small></h3>
+      <h3><i class="fa fa-headphones" aria-hidden="true"></i> Stream <small>(with a small delay)</small>
+      </h3>
       <audio controls preload="none">
         <source src="/audiostream" type="audio/mpeg"/>
       </audio>
@@ -65,7 +67,7 @@
   <div id="mixer-controls" class="section">
     <div class="row">
       <div class="col-md-12">
-        <h3><i class="fa fa-sliders" aria-hidden="true"></i> Mixer</h3>
+        <h3><i class="fa fa-sliders" aria-hidden="true"></i> Mixer <small>(read only)</small></h3>
       </div>
       <div class="col-md-4 col-xs-4">
         <label for="deck1-eq-high">High</label>
@@ -153,6 +155,20 @@
         <label for="vol-seq-4">Shaker</label>
         <input id="vol-seq-4" type="range" min="0" max="127" value="127" step="1"/>
       </div>
+    </div>
+  </div>
+
+  <div class="row" id="effects">
+    <div class="col-md-12">
+      <h3><i class="fa fa-magic" aria-hidden="true"></i> Effects</h3>
+    </div>
+    <div class="col-md-6">
+      <button id="filter-button-1" class="btn btn-lg btn-default">Filter (deck 1)</button>
+      <input id="filter-range-1" style="margin-top: 2em;" type="range" min="0" max="127" value="63" step="1"/>
+    </div>
+    <div class="col-md-6">
+      <button id="filter-button-2" class="btn btn-lg btn-default">Filter (deck 2)</button>
+      <input id="filter-range-2" style="margin-top: 2em;" type="range" min="0" max="127" value="63" step="1"/>
     </div>
   </div>
 

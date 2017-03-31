@@ -192,6 +192,55 @@ document.addEventListener('DOMContentLoaded', () => {
         transcodingButton.innerHTML = "(VLC started)"
       })
 
+      var fxStatus = {
+        "filter-button-1": false,
+        "filter-button-2": false,
+      }
+
+      const filterButtonNote = []
+      filterButtonNote[1] = "C1"
+      filterButtonNote[2] = "D1"
+
+      const filterSliderNote = []
+      filterSliderNote[1] = "C2"
+      filterSliderNote[2] = "D2"
+
+      traktorIn.addListener("controlchange", 3, (event) => {
+        switch (event.controller.number) {
+          case 0:
+            eventBus.publish("boilervroom.fromtraktor", {
+              type: "filter",
+              number: 1,
+              value: (event.value !== 0)
+            })
+            break
+          case 1:
+            eventBus.publish("boilervroom.fromtraktor", {
+              type: "filter",
+              number: 2,
+              value: (event.value !== 0)
+            })
+            break
+          case 4:
+            eventBus.publish("boilervroom.fromtraktor", {
+              type: "filter-range",
+              number: 1,
+              value: (event.value)
+            })
+            break
+          case 5:
+            eventBus.publish("boilervroom.fromtraktor", {
+              type: "filter-range",
+              number: 2,
+              value: (event.value)
+            })
+            break
+          default:
+            console.log("Unhandled CC:")
+            console.dir(event)
+        }
+      })
+
       eventBus.registerHandler("boilervroom.committed", (err, message) => {
         if (err) {
           console.log(err)
@@ -206,8 +255,31 @@ document.addEventListener('DOMContentLoaded', () => {
             break
           case "mixer-control":
             break
+          case "like-update":
+            break
+          case "filter-button":
+            const n = message.body.value;
+            const slot = `filter-button-${n}`
+            fxStatus[slot] = !fxStatus[slot]
+            if (fxStatus[slot]) {
+              traktorOut.playNote(filterButtonNote[n], 3)
+            } else {
+              traktorOut.stopNote(filterButtonNote[n], 3)
+            }
+            eventBus.publish("boilervroom.committed", {
+              type: "filter-button-update",
+              value: message.body.value,
+              state: fxStatus[slot]
+            })
+            break
+          case "filter-button-update":
+            break
+          case "filter-range":
+            traktorOut.sendControlChange(message.body.number + 1, message.body.value, 3)
+            break
           default:
-            console.log("Unknown decision: " + message.body)
+            console.log("Unknown decision: ")
+            console.dir(message.body)
         }
       })
     }

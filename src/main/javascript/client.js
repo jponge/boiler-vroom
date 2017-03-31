@@ -47,6 +47,21 @@ function main(eventBus) {
     button.addEventListener("click", tapHandler)
   })
 
+  const filterButton1 = document.getElementById("filter-button-1")
+  const filterButton2 = document.getElementById("filter-button-2")
+  function filterButtonHandlerMaker(number) {
+    return (e) => {
+      eventBus.publish("boilervroom.fromclients", {
+        type: "filter-button",
+        value: number
+      })
+    }
+  }
+  filterButton1.addEventListener("click", filterButtonHandlerMaker(1))
+  filterButton1.addEventListener("touchend", (e) => {})
+  filterButton2.addEventListener("click", filterButtonHandlerMaker(2))
+  filterButton2.addEventListener("touchend", (e) => {})
+
   eventBus.registerHandler("boilervroom.committed", (err, message) => {
     if (err) {
       console.log(err)
@@ -64,10 +79,31 @@ function main(eventBus) {
       case "like-update":
         changeLikeCount(message.body.value)
         break
+      case "filter-button":
+        break
+      case "filter-button-update":
+        changeFilterButtonStatus(message.body.value, message.body.state)
+        break
+      case "filter-range":
+        break
       default:
-        console.log("Unknown decision: " + message.body)
+        console.log("Unknown decision: ")
+        console.dir(message.body)
     }
   })
+
+  function changeFilterButtonStatus(number, state) {
+    var button = (number === 1) ? filterButton1 : filterButton2
+    if (state) {
+      button.classList.add("btn-primary")
+      button.classList.add("active")
+      button.classList.remove("btn-default")
+    } else {
+      button.classList.remove("btn-primary")
+      button.classList.remove("active")
+      button.classList.add("btn-default")
+    }
+  }
 
   function changeLikeCount(value) {
     document.getElementById("likes-counter").innerHTML = `${value}`
@@ -83,6 +119,21 @@ function main(eventBus) {
     document.getElementById(id).value = value
   }
 
+  function changeFilterSlider(n, value) {
+    document.getElementById(`filter-range-${n}`).value = value
+  }
+
+  for (let n = 1; n <= 2; n++) {
+    const slider = document.getElementById(`filter-range-${n}`)
+    slider.addEventListener("change", (e) => {
+      eventBus.publish("boilervroom.fromclients", {
+        type: "filter-range",
+        number: n,
+        value: parseInt(slider.value)
+      })
+    })
+  }
+
   eventBus.registerHandler("boilervroom.fromtraktor", (err, message) => {
     if (err) {
       console.log(err)
@@ -91,6 +142,12 @@ function main(eventBus) {
     switch (message.body.type) {
       case "sequencer-slot-volume":
         changeSequencerSlotVolume(message.body.slot, message.body.value)
+        break
+      case "filter":
+        changeFilterButtonStatus(message.body.number, message.body.value)
+        break
+      case "filter-range":
+        changeFilterSlider(message.body.number, message.body.value)
         break
       default:
         console.log("Unknow actiom from Traktor: " + message.body)
