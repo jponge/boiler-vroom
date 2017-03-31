@@ -116,11 +116,11 @@ function main(eventBus) {
         type: "like",
         value: incr
       })
-      likeButton.classList.toggle("disabled")
-      dislikeButton.classList.toggle("disabled")
+      likeButton.classList.toggle("invisible")
+      dislikeButton.classList.toggle("invisible")
       setTimeout(() => {
-        likeButton.classList.toggle("disabled")
-        dislikeButton.classList.toggle("disabled")
+        likeButton.classList.toggle("invisible")
+        dislikeButton.classList.toggle("invisible")
       }, 5000)
     }
   }
