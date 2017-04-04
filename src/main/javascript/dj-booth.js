@@ -170,6 +170,26 @@ document.addEventListener('DOMContentLoaded', () => {
         })
       })
 
+      const playEventMaping = []
+      playEventMaping["C"] = "play-1"
+      playEventMaping["D"] = "cue-1"
+      playEventMaping["E"] = "play-2"
+      playEventMaping["F"] = "cue-2"
+      traktorIn.addListener("noteon", 4, (event) => {
+        eventBus.publish("boilervroom.committed", {
+          type: "play",
+          target: playEventMaping[event.note.name],
+          value: true
+        })
+      })
+      traktorIn.addListener("noteoff", 4, (event) => {
+        eventBus.publish("boilervroom.committed", {
+          type: "play",
+          target: playEventMaping[event.note.name],
+          value: false
+        })
+      })
+
       const sourceAlertDisplay = document.getElementById("source-alert")
       eventBus.registerHandler("boilervroom.audiosource", (err, message) => {
         if (!err && message.body.connected) {
@@ -276,6 +296,8 @@ document.addEventListener('DOMContentLoaded', () => {
             break
           case "filter-range":
             traktorOut.sendControlChange(message.body.number + 1, message.body.value, 3)
+            break
+          case "play":
             break
           default:
             console.log("Unknown decision: ")

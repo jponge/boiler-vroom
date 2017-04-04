@@ -86,11 +86,27 @@ function main(eventBus) {
         break
       case "filter-range":
         break
+      case "play":
+        updatePlayButton(message.body.target, message.body.value)
+        break
       default:
         console.log("Unknown decision: ")
         console.dir(message.body)
     }
   })
+
+  function updatePlayButton(targetId, value) {
+    const button = document.getElementById(targetId)
+    if (value) {
+      button.classList.add("btn-primary")
+      button.classList.add("active")
+      button.classList.remove("btn-default")
+    } else {
+      button.classList.remove("btn-primary")
+      button.classList.remove("active")
+      button.classList.add("btn-default")
+    }
+  }
 
   function changeFilterButtonStatus(number, state) {
     var button = (number === 1) ? filterButton1 : filterButton2
