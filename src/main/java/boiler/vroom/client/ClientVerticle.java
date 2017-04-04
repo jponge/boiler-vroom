@@ -28,6 +28,7 @@ import io.vertx.core.logging.LoggerFactory;
 import io.vertx.core.shareddata.Counter;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
+import io.vertx.ext.web.handler.sockjs.BridgeEventType;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.PermittedOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
@@ -40,11 +41,15 @@ public class ClientVerticle extends AbstractVerticle {
   private final Logger logger = LoggerFactory.getLogger(ClientVerticle.class);
 
   private Counter likesCounter;
+  private Counter clientsCount;
+  private Counter streamersCount;
 
   @Override
   public void start(Future<Void> startFuture) throws Exception {
 
     vertx.sharedData().getCounter("likes", ar -> likesCounter = ar.result());
+    vertx.sharedData().getCounter("clientsCount", ar -> clientsCount = ar.result());
+    vertx.sharedData().getCounter("streamersCount", ar -> streamersCount = ar.result());
 
     EventBus eventBus = vertx.eventBus();
 
@@ -56,11 +61,21 @@ public class ClientVerticle extends AbstractVerticle {
     router.get("/").handler(context -> context.reroute("/assets/client.html"));
 
     SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
+
     PermittedOptions permittedOptions = new PermittedOptions().setAddressRegex("boilervroom\\..+");
     BridgeOptions bridgeOptions = new BridgeOptions()
       .addInboundPermitted(permittedOptions)
       .addOutboundPermitted(permittedOptions);
-    sockJSHandler.bridge(bridgeOptions);
+
+    sockJSHandler.bridge(bridgeOptions, event -> {
+      if (BridgeEventType.SOCKET_CREATED.equals(event.type())) {
+        logger.info("New client: " + event.socket().remoteAddress());
+        clientsCount.incrementAndGet(ar -> {
+          logger.info("We now have " + ar.result() + " clients");
+          eventBus.publish("boilervroom.join", new JsonObject().put("value", ar.result()));
+        });
+      }
+    });
 
     router.route("/eventbus/*").handler(sockJSHandler);
 
@@ -123,6 +138,10 @@ public class ClientVerticle extends AbstractVerticle {
       response.exceptionHandler(t -> {
         logger.info("Stream client left with error: " + context.request().remoteAddress(), t);
         consumer.unregister();
+      });
+      streamersCount.incrementAndGet(ar -> {
+        logger.info("We now have " + ar.result() + " streamers");
+        eventBus.publish("boilervroom.streamer", new JsonObject().put("value", ar.result()));
       });
     });
 

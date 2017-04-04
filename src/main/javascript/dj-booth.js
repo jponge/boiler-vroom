@@ -136,6 +136,22 @@ document.addEventListener('DOMContentLoaded', () => {
       serverAlertDisplay.classList.remove("btn-danger")
       serverAlertDisplay.classList.add("btn-success")
 
+      eventBus.registerHandler("boilervroom.join", (err, message) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        document.getElementById("client-count").innerHTML = `${message.body.value}`
+      })
+
+      eventBus.registerHandler("boilervroom.streamer", (err, message) => {
+        if (err) {
+          console.log(err)
+          return
+        }
+        document.getElementById("stream-count").innerHTML = `${message.body.value}`
+      })
+
       const volumeNoteSlots = {
         "C": 1,
         "D": 2,
