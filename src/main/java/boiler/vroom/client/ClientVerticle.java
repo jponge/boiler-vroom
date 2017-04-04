@@ -75,6 +75,7 @@ public class ClientVerticle extends AbstractVerticle {
           eventBus.publish("boilervroom.join", new JsonObject().put("value", ar.result()));
         });
       }
+      event.complete(true);
     });
 
     router.route("/eventbus/*").handler(sockJSHandler);
