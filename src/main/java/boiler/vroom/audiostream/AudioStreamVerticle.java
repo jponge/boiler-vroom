@@ -83,18 +83,23 @@ public class AudioStreamVerticle extends AbstractVerticle {
 
     vlcProcess.start(process -> {
       vertx.setTimer(3000, n -> {
+
         HttpClientOptions options = new HttpClientOptions()
           .setDefaultHost("localhost")
           .setDefaultPort(8001);
+
         vertx.createHttpClient(options)
           .getNow("/stream.mp3", response -> {
             eventBus.publish(ANNOUNCE_DESTINATION, CONNECTED_MESSAGE);
             logger.info("Connected to the VLC transcoder");
+
             response.handler(buffer -> eventBus.publish("boilervroom.audiostream", buffer));
+
             response.exceptionHandler(t -> {
               logger.error(t);
               eventBus.publish(ANNOUNCE_DESTINATION, DISCONNECTED_MESSAGE);
             });
+
             response.endHandler(v -> {
               logger.warn("Connection closed to the VLC transcoder");
               eventBus.publish(ANNOUNCE_DESTINATION, DISCONNECTED_MESSAGE);

@@ -122,24 +122,29 @@ public class ClientVerticle extends AbstractVerticle {
 
     router.get("/audiostream").handler(context -> {
       logger.info("New streaming client: " + context.request().remoteAddress());
+
       HttpServerResponse response = context.response();
       response.setStatusCode(200);
       response.setChunked(true);
       response.putHeader("Content-Type", "audio/mpeg");
+
       MessageConsumer<Buffer> consumer = eventBus.consumer("boilervroom.audiostream");
       consumer.bodyStream().handler(buffer -> {
         if (!response.writeQueueFull()) {
           response.write(buffer);
         }
       });
+
       response.endHandler(v -> {
         logger.info("Stream client left: " + context.request().remoteAddress());
         consumer.unregister();
       });
+
       response.exceptionHandler(t -> {
         logger.info("Stream client left with error: " + context.request().remoteAddress(), t);
         consumer.unregister();
       });
+
       streamersCount.incrementAndGet(ar -> {
         logger.info("We now have " + ar.result() + " streamers");
         eventBus.publish("boilervroom.streamer", new JsonObject().put("value", ar.result()));
