@@ -22,7 +22,7 @@
     "font-awesome": "^4.7.0",
     "resolve-url-loader": "^2.0.2",
     "sockjs-client": "^1.1.2",
-    "vertx3-eventbus-client": "^3.4.1",
+    "vertx3-eventbus-client": "^3.5.4",
     "webmidi-sequencer": "https://github.com/jponge/webmidi-sequencer.git"
   }
 }
